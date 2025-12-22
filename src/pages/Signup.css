@@ -1,0 +1,82 @@
+/* Signup.css */
+
+/* Full page light pastel background */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #fcefee, #e8f0fe); /* soft pastel gradient */
+}
+
+/* Card styling */
+.card {
+  background-color: #ffffffcc; /* semi-transparent white */
+  backdrop-filter: blur(10px); /* soft blur behind card */
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* Input fields styling */
+.form-control {
+  border: 1px solid #f0c27b; /* soft golden border */
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #f7b733;
+  box-shadow: 0 0 10px rgba(247, 183, 51, 0.3);
+}
+
+/* Button styling */
+.btn-warning {
+  background: linear-gradient(90deg, #f7b733, #fc4a1a);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+  background: linear-gradient(90deg, #fc4a1a, #f7b733);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Link styling */
+a {
+  color: #fc4a1a;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #f7b733;
+}
+
+/* Optional: floating pastel shapes */
+body::before, body::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+body::before {
+  width: 200px;
+  height: 200px;
+  background: #f7b733;
+  top: 10%;
+  left: 5%;
+}
+
+body::after {
+  width: 300px;
+  height: 300px;
+  background: #fc4a1a;
+  bottom: 10%;
+  right: 5%;
+}

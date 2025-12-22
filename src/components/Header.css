@@ -1,0 +1,66 @@
+/* Navbar background and styling */
+.custom-navbar {
+  background: linear-gradient(135deg, #fcefee, #ffe6e6); /* soft pastel gradient */
+  border-radius: 20px;
+  padding: 1rem 2rem; /* more vertical space */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Nav links */
+.custom-navbar .nav-link {
+  color: #555 !important;
+  font-weight: 500;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.custom-navbar .nav-link:hover {
+  color: #c33764 !important;
+  transform: translateY(-2px);
+}
+
+/* Buttons */
+.custom-navbar .btn-outline-warning {
+  border-color: #f9d5d3;
+  color: #c33764;
+  transition: all 0.3s;
+}
+
+.custom-navbar .btn-outline-warning:hover {
+  background-color: #f9d5d3;
+  color: #1d2671;
+}
+
+.custom-navbar .btn-warning:hover {
+  background-color: #fbb1b7;
+  transform: translateY(-2px);
+}
+
+/* Logo image */
+.logo-img {
+  width: 70px;        /* increased size */
+  height: 70px;       /* increased size */
+  border-radius: 15px; /* rounded rectangle for a modern look */
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.15) rotate(-5deg);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Brand text next to logo */
+.navbar-brand span {
+  margin-left: 0.5rem;
+  font-size: 1.6rem; /* bigger brand name */
+  color: #1d2671;    /* contrast color */
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.navbar-brand:hover span {
+  color: #c33764;
+}

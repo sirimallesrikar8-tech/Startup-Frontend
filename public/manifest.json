@@ -1,0 +1,22 @@
+{
+  "short_name": "EventApp",
+  "name": "Event All-In-One",
+  "icons": [
+    {
+      "src": "mylogo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "mylogo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#f0f8ff",
+  "display": "standalone",
+  "scope": ".",
+  "theme_color": "#ffcc00"
+}
+  

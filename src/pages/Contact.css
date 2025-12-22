@@ -1,0 +1,23 @@
+.hero-contact {
+  color: #fff;
+  text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.card {
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.card input,
+.card textarea {
+  border-radius: 12px;
+}
+
+.card button {
+  transition: all 0.3s ease;
+}
+
+.card button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}

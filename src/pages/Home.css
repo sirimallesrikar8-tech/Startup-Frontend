@@ -1,0 +1,164 @@
+/* --- General Body & Typography --- */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f7f8fc;
+  color: #333;
+}
+
+h2, h3, h4, h5 {
+  font-family: 'Montserrat', sans-serif;
+  color: #222;
+}
+
+/* --- Hero Carousel --- */
+.hero-carousel .carousel-img {
+  max-height: 350px; /* Reduced height from 500px */
+  width: 100%;
+  object-fit: cover;
+  filter: brightness(0.7);
+  border-radius: 15px;
+  transition: transform 0.5s ease;
+}
+
+.hero-carousel .carousel-item:hover .carousel-img {
+  transform: scale(1.03);
+}
+
+.hero-carousel .carousel-caption h1 {
+  font-size: 3rem;
+  text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+}
+
+.hero-carousel .carousel-caption p {
+  font-size: 1.25rem;
+  text-shadow: 1px 1px 8px rgba(0,0,0,0.5);
+}
+
+.hero-carousel .btn-warning {
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  border: none;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+.hero-carousel .btn-warning:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+}
+
+/* --- Dropdown Button --- */
+.dropdown-btn {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  font-weight: 600;
+  padding: 0.65rem 1.5rem;
+  border-radius: 50px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.dropdown-btn:hover {
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  padding: 0.5rem 0;
+  background: #ffffff;
+}
+
+.dropdown-item {
+  padding: 0.6rem 1.8rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.dropdown-item:hover {
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  color: white;
+}
+
+/* --- Moving Services Cards --- */
+.moving-services .card {
+  border: none;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+}
+
+.moving-services .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+}
+
+.moving-services .card-title {
+  font-weight: 600;
+  color: #222;
+}
+
+/* --- Why Choose Us Section --- */
+.row .shadow-lg {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  border-radius: 20px;
+}
+
+.row .shadow-lg:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* --- Call to Action Section --- */
+.cta-section {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  padding: 4rem 2rem;
+  border-radius: 20px;
+}
+
+.cta-section h3 {
+  font-size: 2.5rem;
+  color: #fff;
+}
+
+.cta-section p {
+  font-size: 1.25rem;
+  color: #f0f0f0;
+}
+
+.cta-section .btn-light {
+  font-weight: 600;
+  padding: 0.7rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.cta-section .btn-light:hover {
+  background: #fff;
+  color: #6a11cb;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+/* --- Scrollable Services Section --- */
+.moving-services {
+  scroll-behavior: smooth;
+}
+
+/* --- Responsive Carousel Captions --- */
+@media (max-width: 768px) {
+  .carousel-caption h1 {
+    font-size: 2rem !important;
+  }
+  .carousel-caption p {
+    font-size: 1rem !important;
+  }
+
+  .hero-carousel .carousel-img {
+    max-height: 250px; /* Reduce height on mobile */
+  }
+}

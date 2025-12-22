@@ -1,0 +1,59 @@
+/* Hero About Section with Image */
+.hero-about {
+  height: 70vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mission Section with Image */
+.mission-section {
+  background-size: cover;
+  background-position: center;
+  border-radius: 20px;
+  padding: 5rem 2rem;
+}
+
+/* Vision Section with Light Pastel Background */
+.vision-section {
+  background-color: #fef7f0; /* Light pastel color */
+  border-radius: 20px;
+  padding: 4rem 2rem;
+}
+
+/* Moving Services Cards */
+.moving-services .card {
+  border: none;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+}
+
+.moving-services .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+}
+
+.moving-services .card-title {
+  font-weight: 600;
+  color: #222;
+}
+
+/* Call to Action Section */
+.cta-about {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border-radius: 20px;
+  padding: 4rem 2rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-about {
+    height: 50vh;
+  }
+  .moving-services .card {
+    min-width: 180px;
+  }
+}

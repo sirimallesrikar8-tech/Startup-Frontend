@@ -1,0 +1,24 @@
+.custom-footer {
+  background: #fcefee; /* light pastel pink */
+  border-radius: 15px 15px 0 0; /* smooth top curves */
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.custom-footer p {
+  color: #555;
+  font-weight: 500;
+  margin: 0;
+}
+
+.custom-footer .social-icons a {
+  color: #c33764;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.custom-footer .social-icons a:hover {
+  color: #1d2671;
+  transform: translateY(-2px);
+}
