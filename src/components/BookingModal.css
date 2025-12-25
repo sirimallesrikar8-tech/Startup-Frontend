@@ -1,0 +1,145 @@
+/* BACKGROUND BLUR */
+.booking-blur-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  z-index: 1040;
+}
+
+/* MODAL FIX */
+.booking-modal-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CALENDAR CENTER */
+.calendar-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* CALENDAR STYLING */
+.stylish-calendar {
+  border-radius: 16px;
+  padding: 14px;
+  background: #fff;
+}
+
+.react-calendar__tile {
+  border-radius: 10px;
+  padding: 12px 0;
+}
+
+/* RANGE COLORS */
+.react-calendar__tile--range {
+  background: #ffe9c7 !important;
+  color: #000;
+}
+
+.react-calendar__tile--rangeStart {
+  background: #f4a100 !important;
+  color: #fff !important;
+  border-radius: 12px;
+}
+
+.react-calendar__tile--rangeEnd {
+  background: #ffb347 !important;
+  color: #fff !important;
+  border-radius: 12px;
+}
+
+/* TIME PICKER */
+.time-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.time-picker select {
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* AVAILABLE TEXT */
+.available-text {
+  text-align: center;
+  font-weight: 600;
+  color: #2e7d32;
+  background: #e8f5e9;
+  padding: 10px;
+  border-radius: 10px;
+}
+/* ===== BLUR BACKDROP ===== */
+.booking-blur-backdrop {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1040;
+}
+
+/* ===== MODAL WRAPPER ===== */
+.booking-modal-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== MODAL SIZE (IMPORTANT PART) ===== */
+.booking-modal {
+  width: 100%;
+  max-width: 620px;        /* ⬅️ BIGGER WIDTH */
+  min-height: 420px;       /* ⬅️ RECTANGLE LOOK */
+  border-radius: 18px;
+  padding: 10px;
+}
+
+/* Make dialog respect new width */
+.modal-dialog {
+  max-width: 620px;
+}
+
+/* ===== BODY SPACING ===== */
+.modal-body {
+  padding: 28px 30px;
+}
+
+/* ===== INPUTS ===== */
+.modal-body input {
+  height: 50px;            /* ⬅️ Taller inputs */
+  border-radius: 16px;
+  font-size: 15px;
+  padding-left: 16px;
+}
+
+/* ===== BUTTON ===== */
+.modal-body .btn-warning {
+  height: 52px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ===== HEADER ===== */
+.modal-header {
+  padding: 18px 24px;
+}
+
+/* ===== MOBILE FIX ===== */
+@media (max-width: 576px) {
+  .booking-modal {
+    max-width: 95%;
+    min-height: auto;
+  }
+}
