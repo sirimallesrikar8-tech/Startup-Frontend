@@ -1,361 +1,325 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import BookingModal from "../components/BookingModal";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "animate.css";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import "./Events.css";
 
-// Images
 import hallImg from "../assets/hall.png";
 import photographerImg from "../assets/photographer.png";
 import decoratorImg from "../assets/decorator.png";
 import catererImg from "../assets/caterer.png";
 import djImg from "../assets/dj.png";
-import heroBg from "../assets/bg2.png";
+import hotelImg from "../assets/hotel.png";
+
+/* TELANGANA DISTRICTS */
+const TELANGANA_DISTRICTS = [
+  "all",
+  "adilabad",
+  "bhadradri kothagudem",
+  "hanumakonda",
+  "hyderabad",
+  "jagtial",
+  "jangaon",
+  "jayashankar bhupalpally",
+  "jogulamba gadwal",
+  "kamareddy",
+  "karimnagar",
+  "khammam",
+  "komaram bheem asifabad",
+  "mahabubabad",
+  "mahabubnagar",
+  "mancherial",
+  "medak",
+  "medchal–malkajgiri",
+  "mulugu",
+  "nagarkurnool",
+  "nalgonda",
+  "narayanpet",
+  "nirmal",
+  "nizamabad",
+  "peddapalli",
+  "rajanna sircilla",
+  "rangareddy",
+  "sangareddy",
+  "siddipet",
+  "suryapet",
+  "vikarabad",
+  "wanaparthy",
+  "warangal"
+];
+
+/* SERVICES DATA */
+const ALL_SERVICES = [
+  {
+    id: 1,
+    title: "Halls",
+    type: "venue",
+    location: "hyderabad",
+    img: hallImg,
+    price: 2500,
+    unavailableDates: ["2025-01-20", "2025-01-25"]
+  },
+  {
+    id: 2,
+    title: "Photographers",
+    type: "photo",
+    location: "karimnagar",
+    img: photographerImg,
+    price: 150,
+    unavailableDates: ["2025-01-18"]
+  },
+  {
+    id: 3,
+    title: "Decorators",
+    type: "decor",
+    location: "warangal",
+    img: decoratorImg,
+    price: 800,
+    unavailableDates: []
+  },
+  {
+    id: 4,
+    title: "Caterers",
+    type: "food",
+    location: "hyderabad",
+    img: catererImg,
+    price: 45,
+    unavailableDates: ["2025-01-19"]
+  },
+  {
+    id: 5,
+    title: "DJs",
+    type: "dj",
+    location: "nalgonda",
+    img: djImg,
+    price: 200,
+    unavailableDates: ["2025-01-21"]
+  },
+  {
+    id: 6,
+    title: "Hotels",
+    type: "hotel",
+    location: "hyderabad",
+    img: hotelImg,
+    price: 3500,
+    unavailableDates: []
+  }
+];
+
+const formatDate = (date) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString().split("T")[0];
+};
 
 function Events() {
-  const [showForm, setShowForm] = useState(false);
-  const [eventName, setEventName] = useState("");
+  const [visibleCount, setVisibleCount] = useState(6);
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [categoryName, setCategoryName] = useState("");
+  /* FILTER STATES */
+  const [priceRange, setPriceRange] = useState(5000); // ✅ increased
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const [organizerName, setOrganizerName] = useState("");
-  const [organizerEmail, setOrganizerEmail] = useState("");
-  const [organizerPhone, setOrganizerPhone] = useState("");
-  const [organizerBio, setOrganizerBio] = useState("");
+  /* SEARCH & LOCATION */
+  const [searchText, setSearchText] = useState("");
+  const [location, setLocation] = useState("all");
 
-  const [message, setMessage] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  /* BOOKING MODAL */
+  const [showBooking, setShowBooking] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
 
-  const services = [
-    { title: "Halls", img: hallImg },
-    { title: "Photographers", img: photographerImg },
-    { title: "Decorators", img: decoratorImg },
-    { title: "Caterers", img: catererImg },
-    { title: "DJs", img: djImg }
-  ];
+  /* FAVORITES */
+  const [favorites, setFavorites] = useState(
+    JSON.parse(localStorage.getItem("favorites")) || []
+  );
 
-  const today = new Date().toISOString().slice(0, 16);
-
-  // Reset input form
-  const resetForm = () => {
-    setTitle("");
-    setDescription("");
-    setLocation("");
-    setStartDate("");
-    setEndDate("");
-    setCategoryName("");
-    setOrganizerName("");
-    setOrganizerEmail("");
-    setOrganizerPhone("");
-    setOrganizerBio("");
+  const toggleFavorite = (id) => {
+    const updated = favorites.includes(id)
+      ? favorites.filter(f => f !== id)
+      : [...favorites, id];
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
   };
 
-  // Search API
-  const fetchSearchResults = async (query) => {
-    if (!query) return setSearchResults([]);
-
-    try {
-      const res = await fetch(`http://localhost:8080/api/events/search?q=${query}`);
-      const data = await res.json();
-      setSearchResults(data);
-    } catch (err) {
-      console.error(err);
-    }
+  const toggleType = (type) => {
+    setSelectedTypes(prev =>
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    );
   };
 
-  useEffect(() => {
-    fetchSearchResults(searchQuery);
-  }, [searchQuery]);
-
-  // Email API (your exact endpoint)
-  const sendEmail = async (to, subject, message) => {
-    try {
-      const res = await fetch("http://localhost:8080/api/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ to, subject, message })
-      });
-
-      if (!res.ok) {
-        throw new Error(await res.text());
-      }
-
-      setMessage("📧 Email sent successfully!");
-    } catch (err) {
-      console.error(err);
-      setMessage("⚠️ Failed to send email.");
-    }
+  const resetFilters = () => {
+    setPriceRange(5000); // ✅ reset correctly
+    setSelectedTypes([]);
+    setSelectedDate(new Date());
+    setSearchText("");
+    setLocation("all");
   };
 
-  // Handle event creation + trigger email
-  const handleEventSubmit = async (e) => {
-    e.preventDefault();
-
-    const body = {
-      title,
-      description,
-      location,
-      startDate,
-      endDate,
-      category: { name: categoryName },
-      organizer: {
-        name: organizerName,
-        email: organizerEmail,
-        phone: organizerPhone,
-        bio: organizerBio
-      }
-    };
-
-    try {
-      const response = await fetch("http://localhost:8080/api/events", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-
-      if (response.ok) {
-        setMessage("🎉 Event Created Successfully!");
-        resetForm();
-        setShowForm(false);
-        fetchSearchResults(searchQuery);
-
-        // Send confirmation email
-        await sendEmail(
-          organizerEmail,
-          `Event Created: ${title}`,
-          `Hello ${organizerName}, your event "${title}" has been successfully created.`
-        );
-      } else {
-        setMessage("❌ " + (await response.text()));
-      }
-    } catch (err) {
-      setMessage("⚠️ Server Error");
-    }
-  };
+  /* FILTERED SERVICES */
+  const filteredServices = ALL_SERVICES
+    .filter(s => s.price <= priceRange)
+    .filter(s => selectedTypes.length === 0 || selectedTypes.includes(s.type))
+    .filter(s => !s.unavailableDates.includes(formatDate(selectedDate)))
+    .filter(s =>
+      searchText === "" ||
+      s.title.toLowerCase().includes(searchText.toLowerCase())
+    )
+    .filter(s =>
+      location === "all" || s.location === location
+    )
+    .slice(0, visibleCount);
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section
-        className="text-center text-white d-flex align-items-center justify-content-center hero-events"
-        style={{
-          backgroundImage: `url(${heroBg})`,
-          height: "50vh",
-          backgroundSize: "cover",
-          backgroundPosition: "center"
-        }}
-      >
-        <div>
-          <h1 className="display-4 fw-bold animate__animated animate__fadeInDown">
-            <span className="text-warning">Events</span>
-          </h1>
-          <p className="lead mt-3 animate__animated animate__fadeInUp">
-            Create and manage your events easily
-          </p>
-        </div>
-      </section>
+    <div className="container-fluid my-5">
 
-      {message && <div className="alert alert-info text-center mt-3">{message}</div>}
-
-      {/* Search Bar */}
-      <div className="container mt-4">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search events..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+      {/* HERO */}
+      <div className="market-hero mb-4">
+        <h2 className="fw-bold">
+          Find the perfect service for your <span>event</span>
+        </h2>
+        <p>Browse verified venues, caterers & decorators ready for your big day</p>
       </div>
 
-      {/* Search Results */}
-      {searchResults.length > 0 && (
-        <section className="container my-4">
-          <h4 className="mb-3">Search Results</h4>
+      <div className="row">
+
+        {/* FILTERS */}
+        <div className="col-md-3">
+          <div className="filters-box">
+
+            <div className="d-flex justify-content-between align-items-center">
+              <h5 className="fw-bold">Filters</h5>
+              <button
+                className="btn btn-link text-warning p-0"
+                onClick={resetFilters}
+              >
+                Reset All
+              </button>
+            </div>
+
+            <h6 className="mt-3">Service Type</h6>
+            {[
+              { label: "Venues & Halls", value: "venue" },
+              { label: "Hotels", value: "hotel" },   // ✅ added
+              { label: "Decorators", value: "decor" },
+              { label: "Photographers", value: "photo" },
+              { label: "Catering", value: "food" },
+              { label: "DJs", value: "dj" }          // ✅ added
+            ].map(t => (
+              <div className="form-check" key={t.value}>
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={selectedTypes.includes(t.value)}
+                  onChange={() => toggleType(t.value)}
+                />
+                <label className="form-check-label">{t.label}</label>
+              </div>
+            ))}
+
+            <h6 className="mt-4">Price Range</h6>
+            <input
+              type="range"
+              min="0"
+              max="5000"
+              value={priceRange}
+              onChange={(e) => setPriceRange(Number(e.target.value))}
+              className="form-range"
+            />
+            <small>Up to ₹{priceRange}</small>
+
+            <h6 className="mt-4">Select Date</h6>
+            <Calendar
+              value={selectedDate}
+              onChange={setSelectedDate}
+              className="event-calendar"
+            />
+          </div>
+        </div>
+
+        {/* SERVICES */}
+        <div className="col-md-9">
+
+          {/* TOP BAR */}
+          <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
+            <p className="text-muted mb-0">
+              Showing {filteredServices.length} results
+            </p>
+
+            <div className="d-flex gap-2">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search services..."
+                style={{ width: "220px" }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+
+              <select
+                className="form-select"
+                style={{ width: "220px" }}
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              >
+                {TELANGANA_DISTRICTS.map((dist) => (
+                  <option key={dist} value={dist}>
+                    {dist === "all"
+                      ? "All Locations"
+                      : dist.charAt(0).toUpperCase() + dist.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* CARDS */}
           <div className="row g-4">
-            {searchResults.map((event) => (
-              <div className="col-md-4" key={event.id}>
-                <div className="card shadow-sm border-0 h-100">
-                  <div className="card-body">
-                    <h5 className="card-title">{event.title}</h5>
-                    <p className="card-text">{event.description}</p>
-                    <p className="text-muted">{event.location}</p>
+            {filteredServices.map(s => (
+              <div className="col-md-4" key={s.id}>
+                <div className="market-card">
+
+                  <div className="market-img">
+                    <img src={s.img} alt={s.title} />
+                    <span className="verified-badge">✔ Verified</span>
+                    <span
+                      className={`heart ${favorites.includes(s.id) ? "active" : ""}`}
+                      onClick={() => toggleFavorite(s.id)}
+                    >
+                      ♥
+                    </span>
                   </div>
+
+                  <div className="p-3">
+                    <h6 className="fw-bold">{s.title}</h6>
+                    <p className="price">
+                      ₹{s.price} <span>/ event</span>
+                    </p>
+
+                    <button
+                      className="btn btn-warning w-100 rounded-pill"
+                      onClick={() => {
+                        setSelectedService(s);
+                        setShowBooking(true);
+                      }}
+                    >
+                      Book Now
+                    </button>
+                  </div>
+
                 </div>
               </div>
             ))}
           </div>
-        </section>
-      )}
 
-      {/* Services Section */}
-      <section className="container my-5">
-        <div className="row g-4">
-          {services.map((s, i) => (
-            <div className="col-md-4" key={i}>
-              <div className="card shadow-lg border-0 h-100 service-card">
-                <img
-                  src={s.img}
-                  className="card-img-top"
-                  style={{ height: "230px", objectFit: "cover" }}
-                  alt={s.title}
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title fw-bold">{s.title}</h5>
-                  <button
-                    className="btn btn-gradient rounded-pill px-4 mt-2 shadow-sm"
-                    onClick={() => {
-                      setEventName(s.title);
-                      setTitle(s.title);
-                      setShowForm(true);
-                    }}
-                  >
-                    Create Event
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
-      </section>
+      </div>
 
-      {/* Event Form */}
-      {showForm && (
-        <div className="booking-popup">
-          <div className="booking-form animate__animated animate__zoomIn">
-            <h3 className="fw-bold mb-3 text-center">Create {eventName} Event</h3>
-
-            <form onSubmit={handleEventSubmit}>
-              <div className="row">
-                <div className="col-md-6 mb-2">
-                  <input
-                    className="form-control"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Title"
-                    required
-                  />
-                </div>
-                <div className="col-md-6 mb-2">
-                  <input
-                    className="form-control"
-                    value={categoryName}
-                    onChange={(e) => setCategoryName(e.target.value)}
-                    placeholder="Category Name"
-                    required
-                  />
-                </div>
-              </div>
-
-              <textarea
-                className="form-control mb-2"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description"
-                required
-                rows="3"
-              />
-
-              <input
-                className="form-control mb-2"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Location"
-                required
-              />
-
-              <div className="row">
-                <div className="col-md-6 mb-2">
-                  <label>Start Date</label>
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    value={startDate}
-                    min={today}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="col-md-6 mb-2">
-                  <label>End Date</label>
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    value={endDate}
-                    min={today}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Organizer */}
-              <h5 className="mt-3">Organizer Details</h5>
-
-              <div className="row">
-                <div className="col-md-6 mb-2">
-                  <input
-                    className="form-control"
-                    value={organizerName}
-                    onChange={(e) => setOrganizerName(e.target.value)}
-                    placeholder="Name"
-                    required
-                  />
-                </div>
-
-                <div className="col-md-6 mb-2">
-                  <input
-                    className="form-control"
-                    value={organizerEmail}
-                    onChange={(e) => setOrganizerEmail(e.target.value)}
-                    placeholder="Email"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-md-6 mb-2">
-                  <input
-                    className="form-control"
-                    value={organizerPhone}
-                    onChange={(e) => setOrganizerPhone(e.target.value)}
-                    placeholder="Phone"
-                    required
-                  />
-                </div>
-
-                <div className="col-md-6 mb-2">
-                  <input
-                    className="form-control"
-                    value={organizerBio}
-                    onChange={(e) => setOrganizerBio(e.target.value)}
-                    placeholder="Bio"
-                    required
-                  />
-                </div>
-              </div>
-
-              <button className="btn btn-warning w-100 mt-3 rounded-pill">
-                Create Event & Send Email
-              </button>
-
-              <button
-                type="button"
-                className="btn btn-secondary w-100 mt-2 rounded-pill"
-                onClick={() => setShowForm(false)}
-              >
-                Cancel
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+      <BookingModal
+        show={showBooking}
+        onClose={() => setShowBooking(false)}
+        service={selectedService}
+      />
     </div>
   );
 }
