@@ -149,8 +149,8 @@ const AppContent = () => {
 };
 
 function App() {
-  // Validate and clear auth state immediately on initialization
-  ensureValidAuthState();
+  // Auth validation is handled by ProtectedRoute components
+  // No need to validate on every app mount - this was causing logout issues
 
   return (
     <Router>
