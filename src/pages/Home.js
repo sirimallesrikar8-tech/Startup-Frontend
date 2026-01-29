@@ -15,10 +15,10 @@ import djImg from '../assets/dj.png';
 function Home() {
   const movingServices = [
     { title: "Event Halls", img: hallImg, description: "Elegant and spacious venues suitable for weddings, receptions, corporate events, and private parties." },
-    { title: "Professional Photographers", img: photographerImg, description: "Capture every memorable moment with our expert photographers and videographers." },
-    { title: "Creative Decorators", img: decoratorImg, description: "Unique and themed decorations to transform your venue into a dream space." },
-    { title: "Catering Services", img: catererImg, description: "Customized menus with delicious cuisine to delight your guests." },
-    { title: "Top DJs", img: djImg, description: "Keep the energy alive with professional DJs and live music entertainment." },
+    { title: "Verified Vendors", img: photographerImg, description: "Connect with trusted and verified service providers to ensure quality and reliability for your events." },
+    { title: "Smart Booking System", img: decoratorImg, description: "Check availability in real-time and book your preferred slots instantly with our seamless platform." },
+    { title: "Secure Payments", img: catererImg, description: "Experience hassle-free and secure transaction processes for all your bookings and advances." },
+    { title: "Event Management", img: djImg, description: "Comprehensive tools and dashboard to manage your guest lists, schedules, and vendors in one place." },
   ];
 
   const eventTypes = [
