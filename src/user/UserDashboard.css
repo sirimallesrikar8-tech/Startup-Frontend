@@ -1,0 +1,218 @@
+/* ===================================
+   USER DASHBOARD - MINIMALIST PREMIUM
+   Clean, Professional, Salmon-based
+   =================================== */
+
+:root {
+    --u-primary: #FF6B35;
+    --u-primary-hover: #e55a2b;
+    --u-primary-subtle: #fff7ed;
+
+    --u-text-main: #0f172a;
+    --u-text-muted: #64748b;
+
+    --u-bg-main: #f8fafc;
+    --u-bg-surface: #ffffff;
+
+    --u-border: #e2e8f0;
+
+    --u-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --u-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.user-dashboard {
+    min-height: 100vh;
+    background-color: var(--u-bg-main);
+    color: var(--u-text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+/* SEARCH CONTAINER FIX */
+.search-container {
+    position: relative;
+    width: 320px;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--u-text-muted);
+    pointer-events: none;
+    z-index: 5;
+    transition: color 0.2s ease;
+}
+
+.search-container .form-control {
+    padding-left: 42px !important;
+    padding-right: 16px !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--u-border) !important;
+    height: 42px !important;
+    font-size: 0.9rem !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background-color: var(--u-bg-surface) !important;
+    width: 100% !important;
+}
+
+.search-container .form-control:focus {
+    border-color: var(--u-primary) !important;
+    box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1) !important;
+    outline: none !important;
+}
+
+.search-container .form-control:focus+.search-icon {
+    color: var(--u-primary);
+}
+
+/* STAT CARDS */
+.stat-card {
+    background: var(--u-bg-surface);
+    border: 1px solid var(--u-border) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--u-shadow-sm) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.stat-card:hover {
+    border-color: var(--u-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--u-shadow-md) !important;
+}
+
+/* BOOKING CARDS */
+.booking-card {
+    background: var(--u-bg-surface);
+    border: 1px solid var(--u-border) !important;
+    border-radius: 16px !important;
+}
+
+/* BUTTONS */
+.btn-primary {
+    background-color: var(--u-primary) !important;
+    border-color: var(--u-primary) !important;
+    border-radius: 10px !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--u-primary-hover) !important;
+    border-color: var(--u-primary-hover) !important;
+}
+
+/* NAVBAR - Home Page Style */
+.user-dashboard-navbar {
+    background: linear-gradient(135deg, #fcefee, #ffe6e6) !important;
+    border-radius: 20px;
+    padding: 1rem 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+}
+
+.user-dashboard-navbar .nav-link {
+    color: #555 !important;
+    font-weight: 500;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.user-dashboard-navbar .nav-link:hover {
+    color: #c33764 !important;
+    transform: translateY(-2px);
+}
+
+.user-dashboard-navbar .btn-outline-danger {
+    border-color: #f9d5d3;
+    color: #c33764;
+    transition: all 0.3s;
+}
+
+.user-dashboard-navbar .btn-outline-danger:hover {
+    background-color: #f9d5d3;
+    color: #1d2671;
+    border-color: #c33764;
+}
+
+/* Logo Image */
+.user-dashboard-navbar .logo-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-dashboard-navbar .logo-img:hover {
+    transform: scale(1.15) rotate(-5deg);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Brand Text */
+.user-dashboard-navbar .brand-text {
+    margin-left: 0.5rem;
+    font-size: 1.6rem;
+    color: #1d2671;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+.user-dashboard-navbar .navbar-brand:hover .brand-text {
+    color: #c33764;
+}
+
+/* Text Primary for navbar indicator */
+.user-dashboard-navbar .text-primary {
+    color: #c33764 !important;
+}
+
+/* FOOTER - Home Page Style */
+.user-dashboard-footer {
+    background: #fcefee;
+    border-radius: 15px 15px 0 0;
+    transition: all 0.3s ease;
+}
+
+.user-dashboard-footer .footer-text {
+    color: #555;
+    font-weight: 500;
+    margin: 0;
+}
+
+.user-dashboard-footer .social-icons a {
+    color: #c33764;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s, transform 0.3s;
+    display: inline-block;
+}
+
+.user-dashboard-footer .social-icons a:hover {
+    color: #1d2671;
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .search-container {
+        width: 100%;
+    }
+
+    .user-dashboard-navbar {
+        border-radius: 15px;
+        padding: 0.75rem 1rem;
+        margin: 0.25rem;
+    }
+
+    .user-dashboard-navbar .logo-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .user-dashboard-navbar .brand-text {
+        font-size: 1.2rem;
+    }
+}

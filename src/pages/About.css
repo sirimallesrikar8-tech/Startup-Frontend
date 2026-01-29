@@ -18,7 +18,8 @@
 
 /* Vision Section with Light Pastel Background */
 .vision-section {
-  background-color: #fef7f0; /* Light pastel color */
+  background-color: #fef7f0;
+  /* Light pastel color */
   border-radius: 20px;
   padding: 4rem 2rem;
 }
@@ -33,7 +34,7 @@
 
 .moving-services .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 
 .moving-services .card-title {
@@ -53,6 +54,7 @@
   .hero-about {
     height: 50vh;
   }
+
   .moving-services .card {
     min-width: 180px;
   }

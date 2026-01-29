@@ -1,49 +1,88 @@
 /* --- General Body & Typography --- */
+html,
 body {
   font-family: 'Poppins', sans-serif;
-  background: #f7f8fc;
+  background: #FDEDEC;
   color: #333;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-h2, h3, h4, h5 {
+/* Consistent orange button styling */
+.btn-warning {
+  background-color: #FF6B35 !important;
+  border-color: #FF6B35 !important;
+  color: #fff !important;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-warning:hover {
+  background-color: #e55a2b !important;
+  border-color: #e55a2b !important;
+  color: #fff !important;
+}
+
+h2,
+h3,
+h4,
+h5 {
   font-family: 'Montserrat', sans-serif;
   color: #222;
 }
 
 /* --- Hero Carousel --- */
+.hero-carousel {
+  padding: 0 15px;
+}
+
+.hero-carousel .carousel {
+  border-radius: 30px;
+  overflow: hidden;
+  transition: border-radius 0.4s ease, transform 0.3s ease;
+}
+
+.hero-carousel .carousel:hover {
+  border-radius: 0;
+  /* Changes from oval to rectangle on hover */
+}
+
 .hero-carousel .carousel-img {
-  max-height: 350px; /* Reduced height from 500px */
+  max-height: 400px;
+  /* Proper height for hero section */
   width: 100%;
   object-fit: cover;
   filter: brightness(0.7);
-  border-radius: 15px;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, filter 0.3s ease;
 }
 
 .hero-carousel .carousel-item:hover .carousel-img {
   transform: scale(1.03);
+  filter: brightness(0.6);
 }
 
 .hero-carousel .carousel-caption h1 {
   font-size: 3rem;
-  text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
 }
 
 .hero-carousel .carousel-caption p {
   font-size: 1.25rem;
-  text-shadow: 1px 1px 8px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
 }
 
 .hero-carousel .btn-warning {
-  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  background: linear-gradient(90deg, #f7b733, #fc4a1a);
   border: none;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
 }
 
 .hero-carousel .btn-warning:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
 }
 
 /* --- Dropdown Button --- */
@@ -53,7 +92,7 @@ h2, h3, h4, h5 {
   font-weight: 600;
   padding: 0.65rem 1.5rem;
   border-radius: 50px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   border: none;
   transition: all 0.3s ease;
 }
@@ -61,13 +100,13 @@ h2, h3, h4, h5 {
 .dropdown-btn:hover {
   background: linear-gradient(135deg, #2575fc, #6a11cb);
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 }
 
 /* Dropdown Menu Styling */
 .dropdown-menu {
   border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   padding: 0.5rem 0;
   background: #ffffff;
 }
@@ -94,7 +133,7 @@ h2, h3, h4, h5 {
 
 .moving-services .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
 }
 
 .moving-services .card-title {
@@ -111,7 +150,7 @@ h2, h3, h4, h5 {
 
 .row .shadow-lg:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 /* --- Call to Action Section --- */
@@ -141,7 +180,7 @@ h2, h3, h4, h5 {
   background: #fff;
   color: #6a11cb;
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
 /* --- Scrollable Services Section --- */
@@ -154,11 +193,13 @@ h2, h3, h4, h5 {
   .carousel-caption h1 {
     font-size: 2rem !important;
   }
+
   .carousel-caption p {
     font-size: 1rem !important;
   }
 
   .hero-carousel .carousel-img {
-    max-height: 250px; /* Reduce height on mobile */
+    max-height: 250px;
+    /* Reduce height on mobile */
   }
 }
