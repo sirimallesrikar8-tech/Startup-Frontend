@@ -89,9 +89,9 @@ function Events() {
     <div className="container-fluid my-5">
       {/* HERO SECTION with CENTERED SEARCH */}
       <div className="text-center mb-5 d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '300px', background: 'linear-gradient(135deg, #FF9966 0%, #FF5E62 100%)', borderRadius: '0 0 50px 50px', marginTop: '-3rem', paddingTop: '3rem', color: 'white' }}>
-        <h1 className="fw-bold display-4 mb-3">Find Trusted Vendors Near You</h1>
+        <h1 className="fw-bold display-4 mb-3">Find the Perfect Event Hall</h1>
         <p className="lead mb-4" style={{ maxWidth: '600px', opacity: 0.9 }}>
-          Search for the best halls, photographers, and caterers for your special event.
+          Discover and book the best venues, banquet halls, and convention centers for your special day.
         </p>
 
         {/* SEARCH BAR CONTAINER */}
@@ -120,7 +120,7 @@ function Events() {
             <input
               type="text"
               className="form-control border-0 shadow-none bg-transparent"
-              placeholder="Search by vendor name (e.g. 'Grand Hall')"
+              placeholder="Search by Hall name (e.g. 'Grand Plaza Premium')"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
