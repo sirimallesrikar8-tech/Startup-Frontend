@@ -1,0 +1,63 @@
+.vendor-bg {
+  background: linear-gradient(to right, #fff1eb, #fdfbfb);
+}
+
+.vendor-card {
+  background: #fff;
+  padding: 40px;
+  width: 100%;
+  max-width: 720px;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* LOGO */
+.logo-box {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.logo-preview img,
+.logo-placeholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-placeholder {
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #999;
+}
+
+/* PORTFOLIO */
+.upload-area {
+  border: 2px dashed #d0d7de;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.upload-area label {
+  color: #0d6efd;
+  cursor: pointer;
+}
+
+.portfolio-preview {
+  display: flex;
+  gap: 10px;
+}
+
+.portfolio-preview img {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  object-fit: cover;
+}

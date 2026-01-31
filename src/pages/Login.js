@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../api/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -12,57 +13,47 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const MAX_USER_ID = 10;
-
-  // Redirect to profile if already logged in
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId) {
-      navigate("/profile");
-    }
-  }, [navigate]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     setMessage("");
 
     try {
-      let userFound = null;
+      const res = await loginUser({
+        email: email.trim(),
+        password: password.trim(),
+      });
 
-      for (let id = 1; id <= MAX_USER_ID; id++) {
-        const response = await fetch(`http://localhost:8080/api/users/${id}`);
+      console.log("LOGIN RESPONSE:", res.data);
 
-        if (!response.ok) continue;
+      // ✅ SAVE AUTH DATA
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+      localStorage.setItem("userId", res.data.userId);
+      localStorage.setItem("userEmail", res.data.email);
 
-        const user = await response.json();
+      // ✅ CRITICAL FIX — SAVE vendorId
+      if (res.data.vendorId) {
+        localStorage.setItem("vendorId", res.data.vendorId);
+      }
 
-        if (user.email === email.trim()) {
-          userFound = user;
-          break;
+      setMessage("✅ Login successful!");
+
+      setTimeout(() => {
+        if (res.data.role === "ADMIN") {
+          navigate("/admin");
+        } else if (res.data.role === "VENDOR") {
+          navigate("/vendor"); // ✅ correct route
+        } else {
+          navigate("/profile");
         }
-      }
+      }, 500);
 
-      if (!userFound) {
-        setMessage("❌ User not found with this email.");
-      } else if (userFound.password !== password.trim()) {
-        setMessage("❌ Incorrect password.");
-      } else {
-        setMessage("✅ Login successful!");
-
-        localStorage.setItem("userId", userFound.id);
-        localStorage.setItem("userName", userFound.name);
-        localStorage.setItem("userEmail", userFound.email);
-
-        setEmail("");
-        setPassword("");
-
-        setTimeout(() => navigate("/profile"), 1000);
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      setMessage("⚠️ Server error. Try again later.");
+    } catch (err) {
+      console.error("Login failed", err);
+      setMessage(
+        err.response?.data?.message || "❌ Invalid email or password"
+      );
     } finally {
       setLoading(false);
     }
@@ -79,7 +70,7 @@ function Login() {
         {message && (
           <div
             className={`alert ${
-              message.includes("✅") ? "alert-success" : "alert-info"
+              message.includes("✅") ? "alert-success" : "alert-danger"
             } text-center`}
           >
             {message}
@@ -95,7 +86,6 @@ function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autoComplete="username"
             />
           </div>
 
@@ -107,7 +97,6 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              autoComplete="current-password"
             />
           </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import BookingModal from "../components/BookingModal";
+import { useNavigate } from "react-router-dom";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -14,97 +15,23 @@ import hotelImg from "../assets/hotel.png";
 
 /* TELANGANA DISTRICTS */
 const TELANGANA_DISTRICTS = [
-  "all",
-  "adilabad",
-  "bhadradri kothagudem",
-  "hanumakonda",
-  "hyderabad",
-  "jagtial",
-  "jangaon",
-  "jayashankar bhupalpally",
-  "jogulamba gadwal",
-  "kamareddy",
-  "karimnagar",
-  "khammam",
-  "komaram bheem asifabad",
-  "mahabubabad",
-  "mahabubnagar",
-  "mancherial",
-  "medak",
-  "medchal–malkajgiri",
-  "mulugu",
-  "nagarkurnool",
-  "nalgonda",
-  "narayanpet",
-  "nirmal",
-  "nizamabad",
-  "peddapalli",
-  "rajanna sircilla",
-  "rangareddy",
-  "sangareddy",
-  "siddipet",
-  "suryapet",
-  "vikarabad",
-  "wanaparthy",
-  "warangal"
+  "all","adilabad","bhadradri kothagudem","hanumakonda","hyderabad",
+  "jagtial","jangaon","jayashankar bhupalpally","jogulamba gadwal",
+  "kamareddy","karimnagar","khammam","komaram bheem asifabad",
+  "mahabubabad","mahabubnagar","mancherial","medak","medchal–malkajgiri",
+  "mulugu","nagarkurnool","nalgonda","narayanpet","nirmal","nizamabad",
+  "peddapalli","rajanna sircilla","rangareddy","sangareddy","siddipet",
+  "suryapet","vikarabad","wanaparthy","warangal"
 ];
 
-/* SERVICES DATA */
+/* SERVICES DATA (IDs MATCH Rahul’s BookingService) */
 const ALL_SERVICES = [
-  {
-    id: 1,
-    title: "Halls",
-    type: "venue",
-    location: "hyderabad",
-    img: hallImg,
-    price: 2500,
-    unavailableDates: ["2025-01-20", "2025-01-25"]
-  },
-  {
-    id: 2,
-    title: "Photographers",
-    type: "photo",
-    location: "karimnagar",
-    img: photographerImg,
-    price: 150,
-    unavailableDates: ["2025-01-18"]
-  },
-  {
-    id: 3,
-    title: "Decorators",
-    type: "decor",
-    location: "warangal",
-    img: decoratorImg,
-    price: 800,
-    unavailableDates: []
-  },
-  {
-    id: 4,
-    title: "Caterers",
-    type: "food",
-    location: "hyderabad",
-    img: catererImg,
-    price: 45,
-    unavailableDates: ["2025-01-19"]
-  },
-  {
-    id: 5,
-    title: "DJs",
-    type: "dj",
-    location: "nalgonda",
-    img: djImg,
-    price: 200,
-    unavailableDates: ["2025-01-21"]
-  },
-  {
-    id: 6,
-    title: "Hotels",
-    type: "hotel",
-    location: "hyderabad",
-    img: hotelImg,
-    price: 3500,
-    unavailableDates: []
-  }
+  { id: "grand-plaza-hall", title: "Halls", type: "hall", location: "hyderabad", img: hallImg, price: 2500, unavailableDates: ["2025-01-20","2025-01-25"] },
+  { id: "elegance-photography", title: "Photographers", type: "photo", location: "karimnagar", img: photographerImg, price: 150, unavailableDates: ["2025-01-18"] },
+  { id: "decorators", title: "Decorators", type: "decor", location: "warangal", img: decoratorImg, price: 800, unavailableDates: [] },
+  { id: "caterers", title: "Caterers", type: "food", location: "hyderabad", img: catererImg, price: 45, unavailableDates: ["2025-01-19"] },
+  { id: "djs", title: "DJs", type: "dj", location: "nalgonda", img: djImg, price: 200, unavailableDates: ["2025-01-21"] },
+  { id: "hotels", title: "Hotels", type: "hotel", location: "hyderabad", img: hotelImg, price: 3500, unavailableDates: [] }
 ];
 
 const formatDate = (date) => {
@@ -114,22 +41,14 @@ const formatDate = (date) => {
 };
 
 function Events() {
-  const [visibleCount, setVisibleCount] = useState(6);
+  const navigate = useNavigate();
 
-  /* FILTER STATES */
-  const [priceRange, setPriceRange] = useState(5000); // ✅ increased
+  const [priceRange, setPriceRange] = useState(5000);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  /* SEARCH & LOCATION */
   const [searchText, setSearchText] = useState("");
   const [location, setLocation] = useState("all");
 
-  /* BOOKING MODAL */
-  const [showBooking, setShowBooking] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
-
-  /* FAVORITES */
   const [favorites, setFavorites] = useState(
     JSON.parse(localStorage.getItem("favorites")) || []
   );
@@ -149,26 +68,19 @@ function Events() {
   };
 
   const resetFilters = () => {
-    setPriceRange(5000); // ✅ reset correctly
+    setPriceRange(5000);
     setSelectedTypes([]);
     setSelectedDate(new Date());
     setSearchText("");
     setLocation("all");
   };
 
-  /* FILTERED SERVICES */
   const filteredServices = ALL_SERVICES
     .filter(s => s.price <= priceRange)
     .filter(s => selectedTypes.length === 0 || selectedTypes.includes(s.type))
     .filter(s => !s.unavailableDates.includes(formatDate(selectedDate)))
-    .filter(s =>
-      searchText === "" ||
-      s.title.toLowerCase().includes(searchText.toLowerCase())
-    )
-    .filter(s =>
-      location === "all" || s.location === location
-    )
-    .slice(0, visibleCount);
+    .filter(s => searchText === "" || s.title.toLowerCase().includes(searchText.toLowerCase()))
+    .filter(s => location === "all" || s.location === location);
 
   return (
     <div className="container-fluid my-5">
@@ -183,28 +95,24 @@ function Events() {
 
       <div className="row">
 
-        {/* FILTERS */}
+        {/* FILTER SIDEBAR */}
         <div className="col-md-3">
           <div className="filters-box">
-
             <div className="d-flex justify-content-between align-items-center">
               <h5 className="fw-bold">Filters</h5>
-              <button
-                className="btn btn-link text-warning p-0"
-                onClick={resetFilters}
-              >
+              <button className="btn btn-link text-warning p-0" onClick={resetFilters}>
                 Reset All
               </button>
             </div>
 
             <h6 className="mt-3">Service Type</h6>
             {[
-              { label: "Venues & Halls", value: "venue" },
-              { label: "Hotels", value: "hotel" },   // ✅ added
+              { label: "Venues & Halls", value: "hall" },
+              { label: "Hotels", value: "hotel" },
               { label: "Decorators", value: "decor" },
               { label: "Photographers", value: "photo" },
               { label: "Catering", value: "food" },
-              { label: "DJs", value: "dj" }          // ✅ added
+              { label: "DJs", value: "dj" }
             ].map(t => (
               <div className="form-check" key={t.value}>
                 <input
@@ -229,56 +137,48 @@ function Events() {
             <small>Up to ₹{priceRange}</small>
 
             <h6 className="mt-4">Select Date</h6>
-            <Calendar
-              value={selectedDate}
-              onChange={setSelectedDate}
-              className="event-calendar"
-            />
+            <Calendar value={selectedDate} onChange={setSelectedDate} />
           </div>
         </div>
 
         {/* SERVICES */}
         <div className="col-md-9">
 
-          {/* TOP BAR */}
-          <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
-            <p className="text-muted mb-0">
-              Showing {filteredServices.length} results
-            </p>
-
-            <div className="d-flex gap-2">
+          {/* 🔍 SEARCH + LOCATION BAR */}
+          <div className="row mb-3">
+            <div className="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2">
               <input
                 type="text"
-                className="form-control"
+                className="form-control rounded-pill px-4"
+                style={{ maxWidth: "280px" }}
                 placeholder="Search services..."
-                style={{ width: "220px" }}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
 
               <select
-                className="form-select"
-                style={{ width: "220px" }}
+                className="form-select rounded-pill px-4"
+                style={{ maxWidth: "220px" }}
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               >
-                {TELANGANA_DISTRICTS.map((dist) => (
-                  <option key={dist} value={dist}>
-                    {dist === "all"
-                      ? "All Locations"
-                      : dist.charAt(0).toUpperCase() + dist.slice(1)}
+                {TELANGANA_DISTRICTS.map(d => (
+                  <option key={d} value={d}>
+                    {d === "all" ? "All Locations" : d.charAt(0).toUpperCase() + d.slice(1)}
                   </option>
                 ))}
               </select>
             </div>
           </div>
 
-          {/* CARDS */}
+          <p className="text-muted mb-2">
+            Showing {filteredServices.length} results
+          </p>
+
           <div className="row g-4">
             {filteredServices.map(s => (
               <div className="col-md-4" key={s.id}>
                 <div className="market-card">
-
                   <div className="market-img">
                     <img src={s.img} alt={s.title} />
                     <span className="verified-badge">✔ Verified</span>
@@ -292,21 +192,15 @@ function Events() {
 
                   <div className="p-3">
                     <h6 className="fw-bold">{s.title}</h6>
-                    <p className="price">
-                      ₹{s.price} <span>/ event</span>
-                    </p>
+                    <p className="price">₹{s.price} <span>/ event</span></p>
 
                     <button
                       className="btn btn-warning w-100 rounded-pill"
-                      onClick={() => {
-                        setSelectedService(s);
-                        setShowBooking(true);
-                      }}
+                      onClick={() => navigate(`/book/${s.id}`)}
                     >
                       Book Now
                     </button>
                   </div>
-
                 </div>
               </div>
             ))}
@@ -314,12 +208,6 @@ function Events() {
 
         </div>
       </div>
-
-      <BookingModal
-        show={showBooking}
-        onClose={() => setShowBooking(false)}
-        service={selectedService}
-      />
     </div>
   );
 }

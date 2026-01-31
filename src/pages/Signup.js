@@ -3,14 +3,21 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
 import "./Signup.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { registerUser } from "../api/auth";
 
 function Signup() {
+  // Common fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("USER"); // Default role
+  const [role, setRole] = useState("USER");
+
+  // Vendor-only fields
+  const [businessName, setBusinessName] = useState("");
+  const [category, setCategory] = useState("");
+  const [location, setLocation] = useState("");
+
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,50 +26,62 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name.trim() || !email.trim() || !phone.trim() || !password.trim() || !role.trim()) {
-      setMessage("⚠ Please fill all fields properly");
+    // Basic validation
+    if (!name || !email || !phone || !password || !role) {
+      setMessage("⚠ Please fill all required fields");
       return;
     }
 
-    // New API expects: id, name, email, phone, password, role
-    const userData = {
-      id: 0,
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      password: password.trim(),
-      role: role.trim().toUpperCase() // Send as uppercase to match enum
-    };
-
-    console.log("Sending data:", userData);
+    // Vendor validation
+    if (
+      role === "VENDOR" &&
+      (!businessName || !category || !location)
+    ) {
+      setMessage("⚠ Please fill all vendor details");
+      return;
+    }
 
     setLoading(true);
     setMessage("");
 
+    // Build payload dynamically
+    const payload =
+      role === "VENDOR"
+        ? {
+            name,
+            email,
+            phone,
+            password,
+            role,
+            businessName,
+            category,
+            location,
+          }
+        : {
+            name,
+            email,
+            phone,
+            password,
+            role,
+          };
+
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/users",
-        userData
+      await registerUser(payload);
+
+      // 🚫 VERY IMPORTANT: prevent auto-login
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      setMessage("🎉 Signup successful! Please login.");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 800);
+
+    } catch (err) {
+      setMessage(
+        err.response?.data?.message || "❌ Signup failed. Try again."
       );
-
-      console.log("Response:", response.data);
-
-      setMessage("🎉 Registration Successful! Redirecting to login...");
-      setName("");
-      setEmail("");
-      setPhone("");
-      setPassword("");
-      setRole("USER");
-
-      setTimeout(() => navigate("/login"), 2000);
-    } catch (error) {
-      console.error("Error during signup:", error);
-
-      if (error.response) {
-        setMessage("❌ " + error.response.data);
-      } else {
-        setMessage("⚠️ Unable to connect to the server. Try again later.");
-      }
     } finally {
       setLoading(false);
     }
@@ -72,78 +91,82 @@ function Signup() {
     <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
       <div
         className="card shadow-lg p-5 rounded-4 animate__animated animate__fadeInUp"
-        style={{ maxWidth: "400px", width: "100%" }}
+        style={{ maxWidth: "420px", width: "100%" }}
       >
         <h2 className="fw-bold text-center mb-4">Signup</h2>
 
         {message && (
-          <div
-            className={`alert ${
-              message.includes("🎉") ? "alert-success" : "alert-danger"
-            } text-center`}
-          >
+          <div className="alert alert-info text-center">
             {message}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control form-control-lg rounded-pill"
-              placeholder="Full Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
+          <input
+            className="form-control form-control-lg rounded-pill mb-3"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
 
-          <div className="mb-3">
-            <input
-              type="email"
-              className="form-control form-control-lg rounded-pill"
-              placeholder="Email Address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+          <input
+            type="email"
+            className="form-control form-control-lg rounded-pill mb-3"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control form-control-lg rounded-pill"
-              placeholder="Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </div>
+          <input
+            className="form-control form-control-lg rounded-pill mb-3"
+            placeholder="Phone Number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
 
-          <div className="mb-3">
-            <input
-              type="password"
-              className="form-control form-control-lg rounded-pill"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+          <input
+            type="password"
+            className="form-control form-control-lg rounded-pill mb-3"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-          {/* Role Dropdown */}
-          <div className="mb-3">
-            <select
-              className="form-select form-control-lg rounded-pill"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              required
-            >
-              <option value="USER">User</option>
-              <option value="ADMIN">Admin</option>
-              <option value="VENDOR">Vendor</option>
-            </select>
-          </div>
+          <select
+            className="form-select form-control-lg rounded-pill mb-3"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="USER">User</option>
+            <option value="VENDOR">Vendor</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+
+          {/* Vendor-only fields */}
+          {role === "VENDOR" && (
+            <>
+              <input
+                className="form-control form-control-lg rounded-pill mb-3"
+                placeholder="Business Name"
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+              />
+
+              <input
+                className="form-control form-control-lg rounded-pill mb-3"
+                placeholder="Category (Eg: Electronics)"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+
+              <input
+                className="form-control form-control-lg rounded-pill mb-3"
+                placeholder="Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </>
+          )}
 
           <button
             type="submit"
