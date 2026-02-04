@@ -80,7 +80,7 @@ const BookingModal = ({ show, onClose, service }) => {
     }
 
     if (hasBookedDateInRange()) {
-      alert("❌ Selected dates already booked");
+      alert("Selected dates already booked");
       return;
     }
 
@@ -89,190 +89,231 @@ const BookingModal = ({ show, onClose, service }) => {
 
   /* ================= CONFIRM ================= */
   const handleConfirm = () => {
-    alert("🎉 Booking Confirmed!");
+    alert("Booking Confirmed!");
     onClose();
   };
 
   return (
-    <>
-      <div className="booking-blur-backdrop" onClick={onClose}></div>
+    <div className="fixed inset-0 z-[1050] flex items-center justify-center p-4 font-display text-[#111418] dark:text-white">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
 
-      <div className="modal show booking-modal-wrapper">
-        <div className="modal-dialog modal-lg modal-dialog-centered">
-          <div className="modal-content booking-modal">
+      {/* Modal Content */}
+      <div className="relative w-full max-w-lg bg-white dark:bg-[#1a202c] rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-in fade-in zoom-in duration-200 border border-[#e5e7eb] dark:border-[#2a3441]">
 
-            {/* HEADER */}
-            <div className="modal-header">
-              {step > 1 && (
-                <button
-                  className="btn btn-light me-2"
-                  onClick={() => setStep(step - 1)}
-                >
-                  ←
-                </button>
-              )}
-              <h5 className="modal-title">Book {service?.title}</h5>
-              <button className="btn-close" onClick={onClose}></button>
-            </div>
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#e5e7eb] dark:border-[#2a3441]">
+          <div className="flex items-center gap-3">
+            {step > 1 && (
+              <button
+                onClick={() => setStep(step - 1)}
+                className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400"
+              >
+                <span className="material-symbols-outlined text-xl">arrow_back</span>
+              </button>
+            )}
+            <h3 className="text-xl font-bold leading-tight">
+              Book {service?.title || 'Service'}
+            </h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400"
+          >
+            <span className="material-symbols-outlined text-xl">close</span>
+          </button>
+        </div>
 
-            <div className="modal-body">
+        {/* Body */}
+        <div className="p-6 overflow-y-auto custom-scrollbar flex-1">
 
-              {/* ================= STEP 1 ================= */}
-              {step === 1 && (
-                <>
-                  <h6>Basic Information</h6>
+          {/* ================= STEP 1 ================= */}
+          {step === 1 && (
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Basic Information</label>
+                <p className="text-xs text-gray-500">Please provide your details to proceed.</p>
+              </div>
 
+              <div className="space-y-3">
+                <input
+                  className="w-full h-12 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm"
+                  placeholder="Full Name"
+                  value={user.name}
+                  onChange={(e) => setUser({ ...user, name: e.target.value })}
+                />
+
+                <div>
                   <input
-                    className="form-control mb-2"
-                    placeholder="Full Name"
-                    value={user.name}
-                    onChange={(e) =>
-                      setUser({ ...user, name: e.target.value })
-                    }
-                  />
-
-                  <input
-                    className="form-control mb-2"
+                    className={`w-full h-12 px-4 bg-gray-50 dark:bg-gray-800/50 border ${!isEmailValid && user.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'} rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm`}
                     placeholder="Email (@gmail.com)"
                     value={user.email}
-                    onChange={(e) =>
-                      setUser({ ...user, email: e.target.value })
-                    }
+                    onChange={(e) => setUser({ ...user, email: e.target.value })}
                   />
                   {!isEmailValid && user.email && (
-                    <small className="text-danger">Only Gmail allowed</small>
+                    <p className="text-xs text-red-500 mt-1 ml-1">Only Gmail allowed</p>
                   )}
+                </div>
 
-                  <input
-                    className="form-control mb-2"
-                    placeholder="Phone (10 digits)"
-                    value={user.phone}
-                    onChange={(e) =>
-                      setUser({ ...user, phone: e.target.value })
-                    }
-                  />
+                <input
+                  className="w-full h-12 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm"
+                  placeholder="Phone (10 digits)"
+                  value={user.phone}
+                  onChange={(e) => setUser({ ...user, phone: e.target.value })}
+                />
 
+                <div>
                   <input
                     type="number"
-                    className="form-control mb-2"
+                    className="w-full h-12 px-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm"
                     placeholder="Number of People"
                     value={user.people}
-                    onChange={(e) =>
-                      setUser({ ...user, people: e.target.value })
-                    }
+                    onChange={(e) => setUser({ ...user, people: e.target.value })}
                   />
-
                   {isCapacityExceeded && (
-                    <small className="text-danger">
-                      ❌ Capacity exceeded (Max 150)
-                    </small>
+                    <p className="text-xs text-red-500 mt-1 ml-1">Capacity exceeded (Max 150)</p>
                   )}
+                </div>
+              </div>
 
-                  <button
-                    className="btn btn-warning w-100 mt-3"
-                    disabled={!canProceedStep1}
-                    onClick={() => setStep(2)}
-                  >
-                    Continue
-                  </button>
-                </>
-              )}
-
-              {/* ================= STEP 2 ================= */}
-              {step === 2 && (
-                <>
-                  <h6>Select Date & Time</h6>
-
-                  <Calendar
-                    selectRange
-                    value={dateRange}
-                    onChange={(val) => {
-                      setDateRange(val);
-                      setAvailable(false);
-                    }}
-                    tileDisabled={({ date }) =>
-                      date < today ||
-                      BOOKED_DATES.includes(formatDate(date))
-                    }
-                    tileClassName={({ date }) =>
-                      BOOKED_DATES.includes(formatDate(date))
-                        ? "calendar-booked"
-                        : null
-                    }
-                  />
-
-                  <h6 className="mt-3">Start Time</h6>
-                  <TimePicker value={startTime} setValue={setStartTime} />
-
-                  <h6 className="mt-3">End Time</h6>
-                  <TimePicker value={endTime} setValue={setEndTime} />
-
-                  {!available ? (
-                    <button
-                      className="btn btn-outline-warning w-100 mt-3"
-                      onClick={handleCheckAvailability}
-                    >
-                      Check Availability
-                    </button>
-                  ) : (
-                    <>
-                      <div className="text-success mt-3 text-center">
-                        ✅ Available
-                      </div>
-                      <button
-                        className="btn btn-warning w-100 mt-3"
-                        onClick={() => setStep(3)}
-                      >
-                        Continue to Preview
-                      </button>
-                    </>
-                  )}
-                </>
-              )}
-
-              {/* ================= STEP 3 ================= */}
-              {step === 3 && (
-                <>
-                  <h6>Preview Booking</h6>
-
-                  <ul className="list-group mb-3">
-                    <li className="list-group-item">Name: {user.name}</li>
-                    <li className="list-group-item">Email: {user.email}</li>
-                    <li className="list-group-item">Phone: {user.phone}</li>
-                    <li className="list-group-item">People: {user.people}</li>
-                    <li className="list-group-item">Service: {service.title}</li>
-                    <li className="list-group-item">
-                      Date: {startDate?.toDateString()} →{" "}
-                      {endDate?.toDateString() || startDate?.toDateString()}
-                    </li>
-                    <li className="list-group-item">
-                      Time: {startTime.h}:{startTime.m} {startTime.p} →{" "}
-                      {endTime.h}:{endTime.m} {endTime.p}
-                    </li>
-                  </ul>
-
-                  <button
-                    className="btn btn-warning w-100"
-                    onClick={handleConfirm}
-                  >
-                    Confirm Booking
-                  </button>
-                </>
-              )}
-
+              <button
+                className="mt-2 w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                disabled={!canProceedStep1}
+                onClick={() => setStep(2)}
+              >
+                Continue
+                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
             </div>
-          </div>
+          )}
+
+          {/* ================= STEP 2 ================= */}
+          {step === 2 && (
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Select Date & Time</label>
+              </div>
+
+              <div className="bg-gray-50 dark:bg-gray-800/50 p-2 rounded-2xl border border-gray-100 dark:border-gray-700">
+                <Calendar
+                  selectRange
+                  value={dateRange}
+                  onChange={(val) => {
+                    setDateRange(val);
+                    setAvailable(false);
+                  }}
+                  tileDisabled={({ date }) =>
+                    date < today ||
+                    BOOKED_DATES.includes(formatDate(date))
+                  }
+                  className="w-full border-none bg-transparent font-medium"
+                  tileClassName={({ date }) =>
+                    BOOKED_DATES.includes(formatDate(date))
+                      ? "text-gray-300 line-through cursor-not-allowed"
+                      : "rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                  }
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">Start Time</label>
+                  <TimePicker value={startTime} setValue={setStartTime} />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-medium text-gray-500 uppercase tracking-wider">End Time</label>
+                  <TimePicker value={endTime} setValue={setEndTime} />
+                </div>
+              </div>
+
+              {!available ? (
+                <button
+                  className="w-full h-12 bg-white dark:bg-transparent border border-blue-200 dark:border-blue-900 text-blue-600 dark:text-blue-400 font-bold rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                  onClick={handleCheckAvailability}
+                >
+                  Check Availability
+                </button>
+              ) : (
+                <div className="flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-2">
+                  <div className="flex items-center gap-2 text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-3 rounded-xl justify-center font-bold text-sm border border-green-100 dark:border-green-900/30">
+                    <span className="material-symbols-outlined">check_circle</span>
+                    Dates Available
+                  </div>
+                  <button
+                    className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
+                    onClick={() => setStep(3)}
+                  >
+                    Continue to Preview
+                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ================= STEP 3 ================= */}
+          {step === 3 && (
+            <div className="flex flex-col gap-5">
+              <div className="text-center py-2">
+                <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span className="material-symbols-outlined text-3xl">assignment</span>
+                </div>
+                <h4 className="text-lg font-bold">Booking Summary</h4>
+                <p className="text-sm text-gray-500">Please review your booking details.</p>
+              </div>
+
+              <div className="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 border border-gray-100 dark:border-gray-700 flex flex-col gap-3">
+                <SummaryRow icon="person" label="Name" value={user.name} />
+                <SummaryRow icon="mail" label="Email" value={user.email} />
+                <SummaryRow icon="call" label="Phone" value={user.phone} />
+                <SummaryRow icon="group" label="Guests" value={user.people} />
+                <SummaryRow icon="category" label="Service" value={service?.title || 'Unknown Service'} />
+                <div className="h-px bg-gray-200 dark:bg-gray-700 my-1"></div>
+                <SummaryRow
+                  icon="calendar_month"
+                  label="Date"
+                  value={`${startDate?.toDateString()} - ${endDate?.toDateString() || startDate?.toDateString()}`}
+                />
+                <SummaryRow
+                  icon="schedule"
+                  label="Time"
+                  value={`${startTime.h}:${startTime.m} ${startTime.p} - ${endTime.h}:${endTime.m} ${endTime.p}`}
+                />
+              </div>
+
+              <button
+                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
+                onClick={handleConfirm}
+              >
+                Confirm Booking
+                <span className="material-symbols-outlined text-sm">check</span>
+              </button>
+            </div>
+          )}
+
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-/* ================= TIME PICKER ================= */
+/* ================= HELPER COMPONENTS ================= */
+
+const SummaryRow = ({ icon, label, value }) => (
+  <div className="flex items-center gap-3 text-sm">
+    <span className="material-symbols-outlined text-gray-400 text-[18px]">{icon}</span>
+    <span className="text-gray-500 min-w-[60px]">{label}:</span>
+    <span className="font-semibold text-gray-900 dark:text-gray-100 truncate flex-1 text-right">{value}</span>
+  </div>
+);
+
 const TimePicker = ({ value, setValue }) => (
-  <div className="d-flex gap-2">
+  <div className="flex bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
     <select
-      className="form-select"
+      className="flex-1 bg-transparent py-2.5 text-center text-sm font-semibold focus:outline-none cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition"
       value={value.h}
       onChange={(e) => setValue({ ...value, h: e.target.value })}
     >
@@ -282,8 +323,10 @@ const TimePicker = ({ value, setValue }) => (
       ))}
     </select>
 
+    <div className="w-px bg-gray-200 dark:bg-gray-700"></div>
+
     <select
-      className="form-select"
+      className="flex-1 bg-transparent py-2.5 text-center text-sm font-semibold focus:outline-none cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition"
       value={value.m}
       onChange={(e) => setValue({ ...value, m: e.target.value })}
     >
@@ -293,8 +336,10 @@ const TimePicker = ({ value, setValue }) => (
       ))}
     </select>
 
+    <div className="w-px bg-gray-200 dark:bg-gray-700"></div>
+
     <select
-      className="form-select"
+      className="flex-1 bg-transparent py-2.5 text-center text-sm font-semibold focus:outline-none cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition"
       value={value.p}
       onChange={(e) => setValue({ ...value, p: e.target.value })}
     >

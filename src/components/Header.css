@@ -1,8 +1,10 @@
 /* Navbar background and styling */
 .custom-navbar {
-  background: linear-gradient(135deg, #fcefee, #ffe6e6); /* soft pastel gradient */
+  background: linear-gradient(135deg, #fcefee, #ffe6e6);
+  /* soft pastel gradient */
   border-radius: 20px;
-  padding: 1rem 2rem; /* more vertical space */
+  padding: 1rem 2rem;
+  /* more vertical space */
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
@@ -31,31 +33,46 @@
   color: #1d2671;
 }
 
+/* Signup button - solid orange */
+.custom-navbar .btn-warning {
+  background-color: #FF6B35 !important;
+  border-color: #FF6B35 !important;
+  color: #fff !important;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+}
+
 .custom-navbar .btn-warning:hover {
-  background-color: #fbb1b7;
+  background-color: #e55a2b !important;
+  border-color: #e55a2b !important;
   transform: translateY(-2px);
 }
 
 /* Logo image */
 .logo-img {
-  width: 70px;        /* increased size */
-  height: 70px;       /* increased size */
-  border-radius: 15px; /* rounded rectangle for a modern look */
+  width: 70px;
+  /* increased size */
+  height: 70px;
+  /* increased size */
+  border-radius: 15px;
+  /* rounded rectangle for a modern look */
   object-fit: cover;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .logo-img:hover {
   transform: scale(1.15) rotate(-5deg);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Brand text next to logo */
 .navbar-brand span {
   margin-left: 0.5rem;
-  font-size: 1.6rem; /* bigger brand name */
-  color: #1d2671;    /* contrast color */
+  font-size: 1.6rem;
+  /* bigger brand name */
+  color: #1d2671;
+  /* contrast color */
   font-weight: 700;
   letter-spacing: 1px;
   transition: color 0.3s;

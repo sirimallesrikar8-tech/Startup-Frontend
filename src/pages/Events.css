@@ -9,12 +9,13 @@
   color: #f4a100;
 }
 
-/* FILTERS */
 .filters-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 90px;
 }
 
 /* CARD */
@@ -22,7 +23,7 @@
   background: #fff;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s;
 }
 
@@ -81,7 +82,7 @@
   border: none;
   margin-top: 10px;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
 }
 
 /* PARTIALLY BOOKED */
@@ -103,6 +104,7 @@
   background: #f4a100 !important;
   color: #fff !important;
 }
+
 .form-control::placeholder {
   color: #999;
   font-size: 14px;
@@ -110,4 +112,79 @@
 
 .form-select {
   font-size: 14px;
+}
+
+.filters-box h6 {
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.form-check {
+  margin-bottom: 10px;
+}
+
+.form-check-input {
+  cursor: pointer;
+}
+
+.form-check-label {
+  cursor: pointer;
+  font-size: 14px;
+  color: #444;
+}
+
+.form-check-input:checked+.form-check-label {
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.form-range {
+  height: 6px;
+  border-radius: 10px;
+}
+
+.form-range::-webkit-slider-thumb {
+  background: #f59e0b;
+}
+
+.form-range::-moz-range-thumb {
+  background: #f59e0b;
+}
+
+.event-calendar {
+  border: none;
+  width: 100%;
+  font-size: 13px;
+}
+
+.react-calendar {
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.react-calendar__tile--active {
+  background: #f59e0b !important;
+  color: white !important;
+  border-radius: 10px;
+}
+
+.react-calendar__tile--now {
+  background: #fff3cd;
+  border-radius: 10px;
+}
+
+.react-calendar__tile:disabled {
+  color: #ccc;
+}
+
+.filters-box .btn-link {
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.filters-box .btn-link:hover {
+  text-decoration: underline;
 }

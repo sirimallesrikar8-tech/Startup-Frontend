@@ -1,69 +1,82 @@
-import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// Login component - handles authentication and role-based routing
+import React, { useState } from "react";
 import "animate.css";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import authService from "../admin/services/authService";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
-
-  const MAX_USER_ID = 10;
-
-  // Redirect to profile if already logged in
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId) {
-      navigate("/profile");
-    }
-  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     setMessage("");
 
     try {
-      let userFound = null;
+      const response = await authService.login(email.trim(), password.trim());
 
-      for (let id = 1; id <= MAX_USER_ID; id++) {
-        const response = await fetch(`http://localhost:8080/api/users/${id}`);
+      if (response?.token) {
+        setMessage("Login successful!");
 
-        if (!response.ok) continue;
+        // Store user data from API response
+        localStorage.setItem("userId", response.userId);
+        localStorage.setItem("userName", response.name);
+        localStorage.setItem("userEmail", response.email);
+        localStorage.setItem("role", response.role);
+        localStorage.setItem("token", response.token);
 
-        const user = await response.json();
-
-        if (user.email === email.trim()) {
-          userFound = user;
-          break;
+        // Store vendorId if user is a vendor
+        if (response.vendorId) {
+          localStorage.setItem("vendorId", response.vendorId);
         }
-      }
 
-      if (!userFound) {
-        setMessage("❌ User not found with this email.");
-      } else if (userFound.password !== password.trim()) {
-        setMessage("❌ Incorrect password.");
+        // Store avatar URL if present, otherwise generate default
+        const avatarUrl = response.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(response.name)}&background=137fec&color=fff`;
+        localStorage.setItem("userAvatar", avatarUrl);
+
+        const userRole = response.role?.toUpperCase() || "";
+
+        // Check for pending redirect (e.g., user tried to book without login)
+        const redirectUrl = localStorage.getItem("redirectAfterLogin");
+        if (redirectUrl) {
+          localStorage.removeItem("redirectAfterLogin");
+          navigate(redirectUrl, { replace: true });
+          return;
+        }
+
+        // Role-based routing
+        if (userRole.includes("ADMIN")) {
+          navigate("/admin", { replace: true });
+        } else if (userRole.includes("VENDOR")) {
+          navigate("/vendor", { replace: true });
+        } else {
+          navigate("/dashboard", { replace: true });
+        }
       } else {
-        setMessage("✅ Login successful!");
-
-        localStorage.setItem("userId", userFound.id);
-        localStorage.setItem("userName", userFound.name);
-        localStorage.setItem("userEmail", userFound.email);
-
-        setEmail("");
-        setPassword("");
-
-        setTimeout(() => navigate("/profile"), 1000);
+        throw new Error("Invalid response from server");
       }
-    } catch (error) {
-      console.error("Error during login:", error);
-      setMessage("⚠️ Server error. Try again later.");
-    } finally {
+    } catch (err) {
+      console.error("Login error:", err);
+
+      // User-friendly error messages
+      const isServerError = !err.response || err.response?.status >= 500 || err.message?.includes('Network Error') || err.message?.includes('Failed to fetch');
+
+      let errorMessage;
+
+      if (isServerError) {
+        errorMessage = "Server is currently unreachable. Please try again later.";
+      } else if (err.response?.status === 401 || err.response?.status === 403) {
+        errorMessage = "Invalid email or password. Please try again.";
+      } else {
+        errorMessage = err.message || "An error occurred during login.";
+      }
+
+      setMessage(`Error: ${errorMessage}`);
       setLoading(false);
     }
   };
@@ -78,9 +91,8 @@ function Login() {
 
         {message && (
           <div
-            className={`alert ${
-              message.includes("✅") ? "alert-success" : "alert-info"
-            } text-center`}
+            className={`alert ${message.includes("successful") ? "alert-success" : "alert-danger"
+              } text-center`}
           >
             {message}
           </div>

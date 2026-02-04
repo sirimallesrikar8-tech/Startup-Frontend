@@ -1,86 +1,109 @@
+// Signup component - handles user registration with validation
+// Includes vendor-specific fields (businessName, category, location)
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "animate.css";
 import "./Signup.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import authService from "../admin/services/authService";
 
 function Signup() {
+  // Common fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("USER"); // Default role
+  const [role, setRole] = useState("USER");
+
+  // Vendor-only fields
+  const [businessName, setBusinessName] = useState("");
+  const [category, setCategory] = useState("");
+  const [location, setLocation] = useState("");
+
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name.trim() || !email.trim() || !phone.trim() || !password.trim() || !role.trim()) {
-      setMessage("⚠ Please fill all fields properly");
+    // Basic validation
+    if (!name.trim() || !email.trim() || !phone.trim() || !password.trim()) {
+      setMessage("Please fill all required fields");
       return;
     }
 
-    // New API expects: id, name, email, phone, password, role
+    // Email validation
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setMessage("Please enter a valid email address");
+      return;
+    }
+
+    // Vendor-specific validation
+    if (role === "VENDOR" && (!businessName.trim() || !category.trim() || !location.trim())) {
+      setMessage("Please fill all vendor details");
+      return;
+    }
+
+    // Build payload dynamically based on role
     const userData = {
-      id: 0,
       name: name.trim(),
-      email: email.trim(),
+      email: email.trim().toLowerCase(),
       phone: phone.trim(),
       password: password.trim(),
-      role: role.trim().toUpperCase() // Send as uppercase to match enum
+      role: role.trim().toUpperCase(),
+      businessName: role === "VENDOR" ? businessName.trim() : "",
+      category: role === "VENDOR" ? category.trim() : "",
+      location: role === "VENDOR" ? location.trim() : ""
     };
-
-    console.log("Sending data:", userData);
 
     setLoading(true);
     setMessage("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/users",
-        userData
-      );
+      await authService.register(userData);
 
-      console.log("Response:", response.data);
+      // Prevent auto-login - clear any tokens
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
 
-      setMessage("🎉 Registration Successful! Redirecting to login...");
+      setMessage("Registration Successful! Redirecting to login...");
+
+      // Reset form
       setName("");
       setEmail("");
       setPhone("");
       setPassword("");
       setRole("USER");
+      setBusinessName("");
+      setCategory("");
+      setLocation("");
 
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => {
+        navigate("/login", { replace: false });
+      }, 800);
     } catch (error) {
-      console.error("Error during signup:", error);
-
-      if (error.response) {
-        setMessage("❌ " + error.response.data);
-      } else {
-        setMessage("⚠️ Unable to connect to the server. Try again later.");
-      }
+      console.error("Signup error:", error);
+      const errorMsg = error.message || "Unable to connect to the server. Try again later.";
+      setMessage(`Error: ${errorMsg}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+    <div className="signup-page d-flex align-items-center justify-content-center min-vh-100">
       <div
         className="card shadow-lg p-5 rounded-4 animate__animated animate__fadeInUp"
-        style={{ maxWidth: "400px", width: "100%" }}
+        style={{ maxWidth: "420px", width: "100%" }}
       >
         <h2 className="fw-bold text-center mb-4">Signup</h2>
 
         {message && (
           <div
-            className={`alert ${
-              message.includes("🎉") ? "alert-success" : "alert-danger"
-            } text-center`}
+            className={`alert ${message.includes("Successful")
+              ? "alert-success"
+              : message.includes("Error") ? "alert-danger" : "alert-warning"
+              } text-center`}
           >
             {message}
           </div>
@@ -102,16 +125,17 @@ function Signup() {
             <input
               type="email"
               className="form-control form-control-lg rounded-pill"
-              placeholder="Email Address"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="username"
             />
           </div>
 
           <div className="mb-3">
             <input
-              type="text"
+              type="tel"
               className="form-control form-control-lg rounded-pill"
               placeholder="Phone Number"
               value={phone}
@@ -128,22 +152,66 @@ function Signup() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="new-password"
             />
           </div>
 
-          {/* Role Dropdown */}
           <div className="mb-3">
             <select
-              className="form-select form-control-lg rounded-pill"
+              className="form-select form-select-lg rounded-pill"
               value={role}
               onChange={(e) => setRole(e.target.value)}
               required
             >
               <option value="USER">User</option>
-              <option value="ADMIN">Admin</option>
               <option value="VENDOR">Vendor</option>
+              <option value="ADMIN">Admin</option>
             </select>
           </div>
+
+          {/* Vendor-only fields - appear when VENDOR is selected */}
+          {role === "VENDOR" && (
+            <div className="vendor-fields animate__animated animate__fadeIn">
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control form-control-lg rounded-pill"
+                  placeholder="Business Name"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <select
+                  className="form-select form-select-lg rounded-pill"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                >
+                  <option value="">Select Category</option>
+                  <option value="hall">Venues & Halls</option>
+                  <option value="hotel">Hotels</option>
+                  <option value="photo">Photography</option>
+                  <option value="decor">Decorators</option>
+                  <option value="food">Catering</option>
+                  <option value="dj">DJ & Music</option>
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control form-control-lg rounded-pill"
+                  placeholder="Location (e.g., Hyderabad)"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"

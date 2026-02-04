@@ -1,0 +1,177 @@
+.vendor-setup-page {
+  min-height: 100vh;
+  background: #f6f7fb;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.vendor-card {
+  background: #fff;
+  width: 100%;
+  max-width: 700px;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.vendor-card h2 {
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.vendor-card label {
+  font-weight: 500;
+  margin-top: 15px;
+  display: block;
+}
+
+.vendor-card input,
+.vendor-card select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.vendor-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 14px;
+  max-width: 650px;
+  margin: auto;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: 500;
+  margin-top: 15px;
+  display: block;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* LOGO */
+.logo-section {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.logo-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.logo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* UPLOAD */
+.upload-box {
+  border: 2px dashed #ccc;
+  padding: 25px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 90px);
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.image-thumb img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* BUTTONS */
+.btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.btn-outline {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+}
+.input-error {
+  border: 1px solid #ef4444;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}

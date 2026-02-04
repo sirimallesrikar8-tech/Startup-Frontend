@@ -1,0 +1,89 @@
+.vendor-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+.vendor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.vendor-content {
+  padding: 24px;
+}
+.vendor-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+/* Sidebar */
+.vendor-sidebar {
+  width: 240px;
+  background: #fff;
+  padding: 20px;
+  border-right: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+}
+
+.vendor-sidebar .brand {
+  margin-bottom: 20px;
+}
+
+.nav-item {
+  display: block;
+  padding: 10px;
+  margin-bottom: 6px;
+  color: #333;
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  background: #e8f0ff;
+  color: #2563eb;
+}
+
+.logout-btn {
+  margin-top: auto;
+  border: 1px solid #ddd;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Main area */
+.vendor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar */
+.vendor-topbar {
+  background: white;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.exception-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Content */
+.vendor-content {
+  padding: 24px;
+}

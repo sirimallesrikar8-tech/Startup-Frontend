@@ -15,10 +15,10 @@ import djImg from '../assets/dj.png';
 function Home() {
   const movingServices = [
     { title: "Event Halls", img: hallImg, description: "Elegant and spacious venues suitable for weddings, receptions, corporate events, and private parties." },
-    { title: "Professional Photographers", img: photographerImg, description: "Capture every memorable moment with our expert photographers and videographers." },
-    { title: "Creative Decorators", img: decoratorImg, description: "Unique and themed decorations to transform your venue into a dream space." },
-    { title: "Catering Services", img: catererImg, description: "Customized menus with delicious cuisine to delight your guests." },
-    { title: "Top DJs", img: djImg, description: "Keep the energy alive with professional DJs and live music entertainment." },
+    { title: "Verified Vendors", img: photographerImg, description: "Connect with trusted and verified service providers to ensure quality and reliability for your events." },
+    { title: "Smart Booking System", img: decoratorImg, description: "Check availability in real-time and book your preferred slots instantly with our seamless platform." },
+    { title: "Secure Payments", img: catererImg, description: "Experience hassle-free and secure transaction processes for all your bookings and advances." },
+    { title: "Event Management", img: djImg, description: "Comprehensive tools and dashboard to manage your guest lists, schedules, and vendors in one place." },
   ];
 
   const eventTypes = [
@@ -36,7 +36,7 @@ function Home() {
   return (
     <div style={{ backgroundColor: "#FDEDEC" }}> {/* Light pastel background */}
       {/* Hero Carousel Section */}
-      <section className="hero-carousel">
+      <section className="hero-carousel container my-4">
         <div id="heroCarousel" className="carousel slide" data-bs-ride="carousel" data-bs-interval="2500">
           <div className="carousel-inner">
             {[carousel1, carousel2, carousel3].map((img, index) => (
@@ -47,7 +47,7 @@ function Home() {
                     Welcome to <span className="text-warning">Event All-In-One</span>
                   </h1>
                   <p className="lead mt-3 text-white animate__animated animate__fadeInUp">
-                    Your one-stop solution for organizing events from start to finish 🎉
+                    Your one-stop solution for organizing events from start to finish
                   </p>
                   <a href="/events" className="btn btn-warning btn-lg mt-4 shadow-lg rounded-pill px-4 py-2">
                     Explore Services
@@ -70,7 +70,7 @@ function Home() {
         <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap">
           <h2 className="fw-bold text-dark">Our Services</h2>
           <div className="dropdown">
-            <button className="btn btn-outline-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button className="btn btn-warning text-white rounded-pill dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Event Types
             </button>
             <ul className="dropdown-menu p-3 shadow-lg rounded-3">
