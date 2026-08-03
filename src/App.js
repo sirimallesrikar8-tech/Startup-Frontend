@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile"; // New Profile page
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+ 
 function App() {
   return (
     <Router>
